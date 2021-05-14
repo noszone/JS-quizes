@@ -5,7 +5,7 @@ const pagesElem = document.getElementById("pages");
 //Класс, который представляет сам тест
 class Quiz
 {
-	constructor(type, questions, results)
+	constructor(type, questions, results, isRequireShuffle)
 	{
 		//Тип теста: 1 - классический тест с правильными ответами, 2 - тест без правильных ответов
 		this.type = type;
@@ -15,6 +15,9 @@ class Quiz
 
 		//Массив с возможными результатами
 		this.results = results;
+		
+		//Boolean for to enable shuffle or not. 0 - disabled, 1 - enabled.
+		this.isRequireShuffle=isRequireShuffle;
 
 		//Количество набранных очков
 		this.score = 0;
@@ -191,7 +194,13 @@ const questions =
 ];
 
 //Сам тест
-const quiz = new Quiz(1, questions, results);
+const quiz = new Quiz(1, questions, results,1);
+
+if (quiz.isRequireShuffle==1) {
+	for (let i = 0; i < questions.length; i++) {
+shuffle(questions[i].answers);
+	}
+}	
 
 Update();
 
@@ -283,4 +292,15 @@ function Click(index)
 
 	//Ждём секунду и обновляем тест
 	setTimeout(Update, 1000);
+}
+// for shuffling an answers
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
